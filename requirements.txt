@@ -1,4 +1,4 @@
-torch
-transformers
-fastapi
-uvicorn
+torch==1.10.0
+transformers==4.13.2
+fastapi==0.68.1
+uvicorn==0.15.0
