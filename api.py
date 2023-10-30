@@ -4,10 +4,10 @@ import torch
 
 app = FastAPI()
 
-# Load the Dolly model from HuggingFace
-tokenizer = AutoTokenizer.from_pretrained("EleutherAI/dolly")
+# Load the GPT-Neo 1.3B model from HuggingFace
+tokenizer = AutoTokenizer.from_pretrained("EleutherAI/gpt-neo-1.3B")
 
-model = AutoModelForCausalLM.from_pretrained("EleutherAI/dolly")
+model = AutoModelForCausalLM.from_pretrained("EleutherAI/gpt-neo-1.3B")
 
 @app.post("/generate")
 async def generate(prompt: str):
