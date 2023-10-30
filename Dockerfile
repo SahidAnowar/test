@@ -1,3 +1,4 @@
+# Use the official Python image as the base image
 FROM python:3.9-slim
 
 # Set environment variables
@@ -8,7 +9,10 @@ WORKDIR $APP_HOME
 RUN apt-get update && apt-get install -y \
     build-essential
 
-# Copy requirements.txt and install the dependencies
+# Install the 'transformers' library and other Python dependencies
+RUN pip install --no-cache-dir transformers==4.8.2 fastapi uvicorn
+
+# Copy requirements.txt and install additional Python dependencies
 COPY requirements.txt $APP_HOME/
 RUN pip install --no-cache-dir -r requirements.txt
 
@@ -18,5 +22,5 @@ COPY api.py $APP_HOME/
 # Expose the port the app will run on
 EXPOSE 8000
 
-# Command to run the application
+# Command to run the application using Uvicorn
 CMD ["uvicorn", "api:app", "--host", "0.0.0.0", "--port", "8000"]
