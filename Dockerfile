@@ -10,7 +10,7 @@ RUN apt-get update && apt-get install -y \
     build-essential
 
 # Install the 'transformers' library and other Python dependencies
-RUN pip install --no-cache-dir transformers==4.8.2 fastapi uvicorn
+RUN pip install --no-cache-dir transformers==4.13.2 fastapi uvicorn
 
 # Copy requirements.txt and install additional Python dependencies
 COPY requirements.txt $APP_HOME/
