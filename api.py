@@ -1,22 +1,18 @@
 from fastapi import FastAPI
-from transformers import DollyProcessor, DollyImageChatModel
+from transformers import AutoTokenizer, AutoModelForCausalLM
+import torch
 
 app = FastAPI()
 
-# Print the version of the transformers library
-import transformers
-print("Transformers library version:", transformers.__version__)
+# Load the Dolly model from HuggingFace
+tokenizer = AutoTokenizer.from_pretrained("EleutherAI/dolly")
 
-try:
-    # Load Dolly v2 3b model from HuggingFace
-    model = DollyImageChatModel.from_pretrained("databricks/dolly-v2-3b")
-    processor = DollyProcessor.from_pretrained("databricks/dolly-v2-3b")
-except Exception as e:
-    print("Error loading the model:", str(e))
+model = AutoModelForCausalLM.from_pretrained("EleutherAI/dolly")
 
 @app.post("/generate")
 async def generate(prompt: str):
-    inputs = processor(prompt, return_tensors="pt")
-    out = model.generate(**inputs)
-    response = processor.decode(out[0])
+    input_ids = tokenizer.encode(prompt, return_tensors="pt")
+    output = model.generate(input_ids, max_length=100, num_return_sequences=1)
+
+    response = tokenizer.decode(output[0], skip_special_tokens=True)
     return {"response": response}
